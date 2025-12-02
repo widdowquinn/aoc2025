@@ -125,8 +125,12 @@ def load_instructions(fpath: Path) -> list[str]:
 
 ## Run tests and solve
 if __name__ == "__main__":
+    import time
+
+    t0 = time.time()  # Start clock
+
     testdata = load_instructions(Path("day01/test.txt"))
-    zeros, passes = solve(testdata, verbose=True)
+    zeros, passes = solve(testdata)
     print(f"Test part 1 solution: {zeros}")
     print(f"Test part 2 solution: {passes}")
 
@@ -134,3 +138,5 @@ if __name__ == "__main__":
     zeros, passes = solve(part1data)
     print(f"Part 1 solution: {zeros}")
     print(f"Test part 2 solution: {passes}")
+
+    print(f"Total time: {time.time() - t0:.3f}s")

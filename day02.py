@@ -5,14 +5,16 @@
 Today's solution has two solution functions because solving
 for the special case (number of repeats == 2) seemed easy enough
 to brute force. I did think about generating all possible repeats
-of appropriate size, but the puzzle could have gone any number of
-ways in part two.
+of appropriate size to start with, but the puzzle could have gone
+any number of ways in part two.
 """
+
+import functools
 
 from pathlib import Path
 
 
-def get_invalid_ids_iter(limits: tuple[int]) -> list[int]:
+def get_invalid_ids_iter(limits: tuple[int, int]) -> list[int]:
     """Returns a list of invalid IDs in the passed range.
 
     This approach iterates over all values in the range and keeps
@@ -34,6 +36,9 @@ def get_invalid_ids_iter(limits: tuple[int]) -> list[int]:
     return invalid
 
 
+# The cache here stores returned values from previous calls with the same
+# arguments and saves a little bit of time
+@functools.cache
 def generate_invalid_ids(minlen, maxlen):
     """Return a set of invalid IDs of lengths minlen and maxlen
 
@@ -67,13 +72,12 @@ def generate_invalid_ids(minlen, maxlen):
                 repeats = numlen // elemlen  # Number of element repeats
                 # Generate all invalid repeat combinations and add them to the list
                 for val in range(10 ** (elemlen - 1), 10**elemlen):
-                    num = int(str(val) * repeats)
                     invalid.append(int(str(val) * repeats))
 
     return set(invalid)
 
 
-def solve_part1(ranges: list[tuple]) -> list[int]:
+def solve_part1(ranges: list[tuple[int, int]]) -> list[int]:
     """Returns a list of invalid IDs for all passed ranges.
 
     Invalid here means that the ID is a direct repeat of a single number,
@@ -88,7 +92,7 @@ def solve_part1(ranges: list[tuple]) -> list[int]:
     return invalid
 
 
-def solve_part2(ranges: list[tuple]) -> list[int]:
+def solve_part2(ranges: list[tuple[int, int]]) -> list[int]:
     """Returns a list of invalid IDs for all passed ranges.
 
     Invalid here means that the ID is composed of two or more repeats of
@@ -121,6 +125,10 @@ def load_ranges(fpath: Path) -> list[tuple]:
 
 ## Run tests and solve
 if __name__ == "__main__":
+    import time
+
+    t0 = time.time()  # Start clock
+
     testdata = load_ranges(Path("day02/test.txt"))
     invalid_pt1 = solve_part1(testdata)
     invalid_pt2 = solve_part2(testdata)
@@ -132,3 +140,5 @@ if __name__ == "__main__":
     invalid_pt2 = solve_part2(inputdata)
     print(sum(invalid_pt1))
     print(sum(invalid_pt2))
+
+    print(f"Total time: {time.time() - t0:.3f}s")
