@@ -9,7 +9,7 @@ about numpy - whether it's the quickest solution or not.
 
 This would be faster if, instead of considering all positions in the map
 at each iteration, we instead only updated the neighbour counts of the
-neighbours of removed rolls.
+neighbours of removed rolls - as in Game of Life.
 """
 
 from pathlib import Path
