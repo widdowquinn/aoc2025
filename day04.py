@@ -100,7 +100,7 @@ def count_removed_rolls(arr: npt.NDArray) -> int:
             with np.nditer(neighbour_map, flags=["multi_index"]) as itx:
                 for _ in itx:
                     if (
-                        _.item() > -1 and _.item() < 4
+                        _.item() > -1 and _.item() < 4  # type: ignore
                     ):  # accessible so remove from array
                         arr[itx.multi_index] = 0
 
